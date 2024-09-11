@@ -47,14 +47,15 @@ public class UserResource {
         return ResponseEntity.ok(findById(id));
     }
 
-    @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        User retrievedUser = findById(user.getId());
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable UUID id) {
+        User retrievedUser = findById(id);
         retrievedUser.setName(user.getName());
         retrievedUser.setPassword(user.getPassword());
         User updatedUser = userRepository.save(retrievedUser);
         return ResponseEntity.ok(updatedUser);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable UUID id) {
