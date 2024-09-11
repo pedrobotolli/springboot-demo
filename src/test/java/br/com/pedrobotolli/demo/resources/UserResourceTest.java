@@ -140,7 +140,7 @@ public class UserResourceTest {
         Mockito.when(userRepository.save(user)).thenReturn(user);
 
         MockHttpServletRequestBuilder request = MockMvcRequestBuilders
-                .put("/users")
+                .put("/users/{id}", id)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(this.mapper.writeValueAsString(user));
 

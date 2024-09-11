@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.Objects;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -47,9 +48,10 @@ public class UserResource {
         return ResponseEntity.ok(findById(id));
     }
 
-    @PutMapping
-    public ResponseEntity<User> updateUser(@RequestBody User user) {
-        User retrievedUser = findById(user.getId());
+    @PutMapping("/{id}")
+    @CacheEvict(value = "userEntityCache", key = "#id")
+    public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable UUID id) {
+        User retrievedUser = findById(id);
         retrievedUser.setName(user.getName());
         retrievedUser.setPassword(user.getPassword());
         User updatedUser = userRepository.save(retrievedUser);
